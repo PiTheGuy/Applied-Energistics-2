@@ -4,15 +4,12 @@ export default async function ({github, context, core}) {
     // Matches tags like fabric/v1.0.0...
     const tagRegexp = /^(?:v|.*\/v)(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-.+)?(?:\+.+)?$/;
 
-    // Retrieves the last releases in batches of 10 and find the last release for the branch we're building for
-    let buildNumber = context.env.GITHUB_RUN_NUMBER;
-    if (!buildNumber) {
-        throw new Error("Missing build number environment variable GITHUB_RUN_NUMBER");
-    }
+    let buildNumber = context.github.run_number;
     let latestRelease;
     let version;
     let releaseVersion;
     let page;
+    // Retrieves the last releases in batches of 10 and find the last release for the branch we're building for
     for (page = 0; page < 10 && !version; page++) {
         const {data: releases} = await github.rest.repos.listReleases({
             owner: context.repo.owner,
