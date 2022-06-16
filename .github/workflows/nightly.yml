@@ -25,7 +25,7 @@ jobs:
         id: nightly-info
         with:
           script: |
-            const script = require('./.github/nightly_version.mjs');
+            const script = await import('./.github/nightly_version.mjs');
             await script({github, context, core});
       - name: Get result
         run: |
