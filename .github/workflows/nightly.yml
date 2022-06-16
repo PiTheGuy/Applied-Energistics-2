@@ -16,8 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: ${{ matrix.branch }}
+      #  with:
+      #    ref: ${{ matrix.branch }}
       # Somewhat complex: Figure out which version number to use as the base
       # We use the last release we built on this branch
       - name: Determine last release from this branch
