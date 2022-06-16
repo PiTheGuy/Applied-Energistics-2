@@ -1,10 +1,11 @@
-export default async function ({github, context, core}) {
-    const branch = context.matrix.branch;
+export default async function ({github, context, branch, core}) {
 
     // Matches tags like fabric/v1.0.0...
     const tagRegexp = /^(?:v|.*\/v)(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-.+)?(?:\+.+)?$/;
 
-    let buildNumber = context.github.run_number;
+    const {owner, repo} = context.repo;
+
+    let buildNumber = context.runNumber;
     let latestRelease;
     let version;
     let releaseVersion;
@@ -12,8 +13,8 @@ export default async function ({github, context, core}) {
     // Retrieves the last releases in batches of 10 and find the last release for the branch we're building for
     for (page = 0; page < 10 && !version; page++) {
         const {data: releases} = await github.rest.repos.listReleases({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
+            owner,
+            repo,
             per_page: 10,
             page
         });
@@ -41,8 +42,8 @@ export default async function ({github, context, core}) {
 
     const randomNonExistingTagname = "nightly-" + Math.random();
     const releaseNotes = await github.rest.repos.generateReleaseNotes({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
+        owner,
+        repo,
         tag_name: randomNonExistingTagname,
         target_commitish: branch,
         previous_tag_name: latestRelease.tag_name

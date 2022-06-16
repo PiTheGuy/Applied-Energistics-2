@@ -25,8 +25,9 @@ jobs:
         id: nightly-info
         with:
           script: |
-            const script = await import(context.github.workspace + '/.github/nightly_version.mjs');
-            await script({github, context, core});
+            const script = await import('${{ context.github.workspace }}/.github/nightly_version.mjs');
+            const branch = '${{ matrix.branch }}';
+            await script({github, context, branch, core});
       - name: Get result
         run: |
           echo "${{steps.nightly-info.outputs.version}}"
