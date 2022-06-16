@@ -20,7 +20,7 @@ jobs:
       # Somewhat complex: Figure out which version number to use as the base
       # We use the last release we built on this branch
       - name: Determine last release from this branch
-      - uses: actions/github-script@v6
+        uses: actions/github-script@v6
         id: nightly-info
         with:
           script: |
