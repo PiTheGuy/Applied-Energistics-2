@@ -1,10 +1,6 @@
 name: 'Export Guide'
 
 on:
-  # This will run the workflow every day at 01:00 UTC
-  # This will run against master and publish the development version of the guide
-  schedule:
-    - cron: '0 1 * * *'
   # Allow running it manually against any ref
   workflow_dispatch: { }
   # Run on all push events
